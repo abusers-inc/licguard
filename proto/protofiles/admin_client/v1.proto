@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package admin_client.v1;
+
+import "google/protobuf/timestamp.proto";
+
+message Policy {
+  optional uint64 limit_connections = 1;
+}
+
+message CreateLicenseReq {
+  string holder = 1;
+  google.protobuf.Timestamp expiry = 2;
+  string extra_data = 3;
+
+  Policy policy = 4;
+  
+  string app = 5;
+}
+
+message CreateLicenseResponse {
+  string license_key = 1;
+}
+
+message CreateAppReq {
+  string name = 1;
+  string app_owner = 2;
+  string data_schema = 3;
+  string admin_key = 4;
+}
+
+message CreateAppResponse {
+  string id = 1;
+  string public_key = 2;
+}
+
+message ExtendLicense {
+  string license = 1;
+  google.protobuf.Timestamp to_date = 2;
+}
+
+message ExtendLicenseResponse {}
+
+service LicenseServer {
+  rpc CreateApp(CreateAppReq) returns (CreateAppResponse);
+  rpc CreateLicense(CreateLicenseReq) returns (CreateLicenseResponse);
+}

@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package software.v1;
+
+import "google/protobuf/timestamp.proto";
+
+
+enum LicenseError {
+    EXPIRED = 0;
+    INVALID_KEY = 1;
+    TOO_MANY_SESSIONS = 2;
+    REVOKED = 3;
+    INTERNAL = 4;
+}
+
+message InfoRequest {
+    message Request{
+        string key_id = 1;
+    }
+
+    Request req = 2;
+    uint64 nonce = 3;
+}
+
+message InfoResponse {
+    message Response {
+        google.protobuf.Timestamp expiry = 1;       
+        string extra_data = 2;
+    }
+
+    oneof result {
+        Response ok = 4;
+        LicenseError error = 5;
+    }
+    uint64 nonce = 6;
+    bytes signature = 7;
+}
+
+message ClientHearthbeat {
+    uint64 nonce = 1;
+    
+}
+message ServerHearthbeatData {
+    optional LicenseError error = 1;
+}
+
+message ServerHearthbeat {
+    uint64 nonce = 1;
+    bytes signature = 2;
+    ServerHearthbeatData data = 3;
+}
+
+message ClientMessage {
+    oneof data {
+        ClientHearthbeat hearthbeat = 1;
+        InfoRequest auth = 2;        
+    }
+    
+}
+message ServerMessage {
+    oneof data {
+        ServerHearthbeat heathbeat = 1;
+        InfoResponse auth = 2;
+    }
+}
+
+service Authority {
+    rpc Hearthbeat(stream ClientMessage) returns (stream ServerMessage);
+}
+
+
