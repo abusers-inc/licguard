@@ -2,7 +2,10 @@ use std::{ops::Deref, sync::Arc};
 
 use chrono::{DateTime, Utc};
 use colored::Colorize;
-use proto::software::v1::{info_response, ChronoExt, LicenseError};
+use proto::{
+    software::v1::{info_response, LicenseError},
+    ChronoExt,
+};
 
 const GUI_DELAY: std::time::Duration = std::time::Duration::from_secs(10);
 

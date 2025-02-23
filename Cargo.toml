@@ -3,7 +3,6 @@ members = [
   "proto",
   "server",
   "client",
-  "cli",
   "server/migration"
 ]
 resolver = "2"

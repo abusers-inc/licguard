@@ -6,7 +6,6 @@ use sea_orm::entity::prelude::*;
 #[sea_orm(table_name = "app")]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
-    pub id: Uuid,
     pub name: String,
     #[sea_orm(column_type = "Blob")]
     pub private_key: Vec<u8>,

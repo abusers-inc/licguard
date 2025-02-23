@@ -21,3 +21,4 @@ serde_json = "1.0.138"
 tracing.workspace = true
 tracing-subscriber.workspace = true
 tokio-stream.workspace = true
+hex = "0.4.3"

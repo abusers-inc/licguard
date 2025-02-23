@@ -4,3 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+ed25519-dalek = {workspace = true, features = ["rand_core"]}
+rand = "0.8"
+proto.path = "../proto"
+hex = "0.4.3"

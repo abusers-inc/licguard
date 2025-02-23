@@ -1,8 +1,4 @@
-use std::{
-    net::{IpAddr, SocketAddr},
-    str::FromStr,
-    sync::Arc,
-};
+use std::net::IpAddr;
 
 use figment::{
     providers::{Env, Format, Toml},
@@ -22,8 +18,6 @@ pub struct Config {
 
 #[tokio::main]
 async fn main() -> eyre::Result<()> {
-    tracing_subscriber::fmt::init();
-
     let config: Config = Figment::new()
         .merge(Env::raw())
         .merge(Toml::file(CONFIG_PATH))

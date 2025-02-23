@@ -11,8 +11,7 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(App::Table)
                     .if_not_exists()
-                    .col(pk_uuid(App::Id))
-                    .col(string(App::Name))
+                    .col(string(App::Name).primary_key())
                     .col(blob(App::PrivateKey))
                     .col(blob(App::PublicKey))
                     .col(json_binary(App::DataSchema))
@@ -30,12 +29,12 @@ impl MigrationTrait for Migration {
                     .col(timestamp(License::Expiry).default(Expr::current_timestamp()))
                     .col(json_binary(License::ExtraData))
                     .col(integer_null(License::PolicyLimitConnections))
-                    .col(uuid(License::App))
+                    .col(string(License::App))
                     .foreign_key(
                         ForeignKey::create()
                             .name("fk_license_app")
                             .from(License::Table, License::App)
-                            .to(App::Table, App::Id),
+                            .to(App::Table, App::Name),
                     )
                     .to_owned(),
             )
@@ -66,12 +65,12 @@ impl MigrationTrait for Migration {
                     .if_not_exists()
                     .col(pk_uuid(AdminKey::Id))
                     .col(string(AdminKey::Owner))
-                    .col(uuid(AdminKey::App))
+                    .col(string(AdminKey::App))
                     .foreign_key(
                         ForeignKey::create()
                             .name("fk_adminkey_app")
                             .from(AdminKey::Table, AdminKey::App)
-                            .to(App::Table, App::Id),
+                            .to(App::Table, App::Name),
                     )
                     .to_owned(),
             )
@@ -116,7 +115,6 @@ enum LicenseLog {
 #[derive(DeriveIden)]
 enum App {
     Table,
-    Id,
     Name,
     PrivateKey,
     PublicKey,
